@@ -302,8 +302,8 @@ public class travelingSalesman{
 
       public static void SearchHorizon(Destination priority){
 /* x IS THE MAX NUMBER OF NEARBY STOPS THE DRONE MAY CONSIDER VISITING BEFORE THE PRIORITY
-y & z EFFECT HOW FAR THE DRONE MAY DIVERT IT'S PATH FROM THE PRIORITY
-x,y,z are the independant variables.
+y EFFECTS HOW FAR THE DRONE MAY DIVERT IT'S PATH FROM THE PRIORITY
+x,y are the independant variables.
 Their current values are chosen to minimise
  both 'lateMinutes' and 'lateDeliveries.size()'.*/
          
