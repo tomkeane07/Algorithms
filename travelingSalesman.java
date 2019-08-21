@@ -9,13 +9,15 @@ class Destination
   LocalTime orderTime;
   int index;
    
-   public Destination(int index, String address, double x, double y, LocalTime orderTime)
-   {
+   public Destination(int index, String address, double x, double y, LocalTime orderTime){
       this.index = index;
       this.address = address;
       this.x=x;
       this.y=y;
       this.orderTime=orderTime;
+   }
+   public Destination(double x, double y){
+    this.x = x; this.y = y;
    }
 
   //RETURNS DISTANCE IN METERS
@@ -77,7 +79,7 @@ class Drone
    {
       this.x = x;
       this.y = y;
-      this.destination = new Destination(0,"",x,y,LocalTime.of(0,0));
+      this.destination = new Destination(x,y);
    }
     public void setLocation(Destination d)
    {
@@ -94,10 +96,15 @@ class Drone
 
       if(travelingSalesman.isThisPriority){
         distance = travelingSalesman.distanceDP;
+        //Illustration of how far drone travels
+        for(int i =0; i< distance/1000; i++){System.out.print(".");}
+          System.out.println(d.index+"!");
         countPriorities++;
       }
       else{
         distance = travelingSalesman.distanceDS;
+        for(int i =0; i< distance/1000; i++){System.out.print(".");}
+          System.out.println(d.index);
         countOnways++;
       }
 
@@ -288,7 +295,7 @@ public class travelingSalesman{
 
                while(queue.size()>0){
                   Destination priority = queue.get(0);
-                  SearchHorizon(priority);
+                  SearchHorizon(priority, x, y);
                }
                System.out.println("Journey: "+drone.journey);
                System.out.println("travelled: "+drone.mileage +"m");
@@ -300,7 +307,7 @@ public class travelingSalesman{
 
       }
 
-      public static void SearchHorizon(Destination priority){
+      public static void SearchHorizon(Destination priority, int x, double y){
 /* x IS THE MAX NUMBER OF NEARBY STOPS THE DRONE MAY CONSIDER VISITING BEFORE THE PRIORITY
 y EFFECTS HOW FAR THE DRONE MAY DIVERT IT'S PATH FROM THE PRIORITY
 x,y are the independant variables.
@@ -324,7 +331,7 @@ Their current values are chosen to minimise
 
                 isThisPriority = false;
                 queue.remove(i); i--;
-                if(queue.size()<0) SearchHorizon(possibleStop);
+                if(queue.size()<0) SearchHorizon(possibleStop, x, y);
                 if(queue.size()<x) onWay--;
 
                 drone.makeDelivery(possibleStop);
